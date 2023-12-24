@@ -35,28 +35,28 @@ object CastCalendarInstance {
         if(isJpOpened(date)) {
           JpBizCalendar(date)
         } else {
-          doCast(CommonCalendar(date), calendarType, updator)
+          doCast(CommonCalendar(updator(date)), calendarType, updator)
         }
       }
       case Us => {
         if(isUsOpened(date)) {
           UsBizCalendar(date)
         } else {
-          doCast(CommonCalendar(date), calendarType, updator)
+          doCast(CommonCalendar(updator(date)), calendarType, updator)
         }
       }
       case JpAndUs => {
         if(isJpOpened(date) && isUsOpened(date)) {
           JpAndUsBizCalendar(date)
         } else {
-          doCast(CommonCalendar(date), calendarType, updator)
+          doCast(CommonCalendar(updator(date)), calendarType, updator)
         }
       }
       case JpOrUs => {
         if(isJpOpened(date) || isUsOpened(date)) {
           JpOrUsBizCalendar(date)
         } else {
-          doCast(CommonCalendar(date), calendarType, updator)
+          doCast(CommonCalendar(updator(date)), calendarType, updator)
         }
       }
     }

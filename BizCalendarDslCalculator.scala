@@ -5,6 +5,12 @@ import java.time.LocalDate
 import CalendarType._
 import CastCalendarInstance._
 import BizCalendarSyntax._
+import CalendarArithmeticInstance._
+import CommonCalendarArithmeticInstance._
+import JpBizCalendarArithmeticInstance._
+import UsBizCalendarArithmeticInstance._
+import JpAndUsBizCalendarInstance._
+import JpOrUsBizCalendarInstance._
 
 class BizCalendarDslCalculator(targetDate: LocalDate) extends JavaTokenParsers {
   private def binOp = "+" | "-"
@@ -24,19 +30,19 @@ class BizCalendarDslCalculator(targetDate: LocalDate) extends JavaTokenParsers {
   private def term: Parser[Calendar] = initTerm | "(" ~> expression <~ ")"
   private def castTerm = term ~ castOp ~ cal ^^ { t =>
     t match {
-      case bizCalendar ~ "_" ~ calendar => bizCalendar __ calendar
-      case bizCalendar ~ "^" ~ calendar => bizCalendar ^  calendar
+      case calendar ~ "_" ~ calendarType => calendar __ calendarType
+      case calendar ~ "^" ~ calendarType => calendar ^  calendarType
     }
   }
   private def expression: Parser[Calendar] = castTerm ~ opt(binOp ~ num) ^^ { t =>
     t match {
-      case bizCalendar ~ None => bizCalendar
-      //case bizCalendar ~ Some(binOpNum) => {
-      //  binOpNum match {
-      //    case "+" ~ n => bizCalendar + n
-      //    case "-" ~ n => bizCalendar - n
-      //  }
-      //}
+      case calendar ~ None => calendar
+      case calendar ~ Some(binOpNum) => {
+        binOpNum match {
+          case "+" ~ n => calendar + n
+          case "-" ~ n => calendar - n
+        }
+      }
     }
   }
 
